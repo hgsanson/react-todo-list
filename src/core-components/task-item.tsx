@@ -7,7 +7,7 @@ import TrashIcon from "../assets/icons/trash.svg?react";
 import PencilIcon from "../assets/icons/pencil.svg?react";
 import XIcon from "../assets/icons/x.svg?react";
 import CheckIcon from "../assets/icons/check.svg?react";
-import { useState } from "react";
+import React, { useState } from "react";
 import InputText from "../components/input-text";
 import { TaskState, type Task } from "../models/task";
 import { cx } from "class-variance-authority";
@@ -21,18 +21,29 @@ export default function TaskItem({ task }: TaskItemProps) {
 		task?.state === TaskState.Creating,
 	);
 
-	function handleEditTask() {
-		setIsEditing(false);
-	}
+	const [taskTitle, setTaskTitle] = useState("");
 
-	function handleExitEditTask() {
+	function handleEditTask() {
 		setIsEditing(true);
 	}
 
+	function handleExitEditTask() {
+		setIsEditing(false);
+	}
+
+	function handleChangeTaskTitle(e: React.ChangeEvent<HTMLInputElement>) {
+		setTaskTitle(e.target.value || "");
+	}
+
+	function handleSaveTask(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		setIsEditing(false);
+	}
+
 	return (
-		<Card size="md" className="flex items-center gap-4">
+		<Card size="md">
 			{!isEditing ? (
-				<>
+				<div className="flex items-center gap-4">
 					<InputCheckbox
 						value={task?.concluded?.toString()}
 						checked={task?.concluded}
@@ -52,23 +63,25 @@ export default function TaskItem({ task }: TaskItemProps) {
 							onClick={handleEditTask}
 						/>
 					</div>
-				</>
+				</div>
 			) : (
-				<>
-					<InputText className="flex-1" />
+				<form className="flex items-center gap-4" onSubmit={handleSaveTask}>
+					<InputText
+						className="flex-1"
+						onChange={handleChangeTaskTitle}
+						required
+						autoFocus
+					/>
 					<div className="flex gap-1">
 						<ButtonIcon
+							type="button"
 							icon={XIcon}
 							variant="secondary"
 							onClick={handleExitEditTask}
 						/>
-						<ButtonIcon
-							icon={CheckIcon}
-							variant="primary"
-							onClick={handleEditTask}
-						/>
+						<ButtonIcon type="submit" icon={CheckIcon} variant="primary" />
 					</div>
-				</>
+				</form>
 			)}
 		</Card>
 	);
