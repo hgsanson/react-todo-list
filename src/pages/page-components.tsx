@@ -44,16 +44,18 @@ export default function PageComponents() {
 				</div>
 
 				<div>
-					<Button variant={"primary"} icon={PlusIcon}>
-						New task
+					<Button icon={PlusIcon}>New task</Button>
+					<Button icon={PlusIcon} handling>
+						Creating...
 					</Button>
 				</div>
 
 				<div className="flex gap-2">
 					<ButtonIcon icon={TrashIcon} />
-					<ButtonIcon variant={"secondary"} icon={TrashIcon} />
-					<ButtonIcon variant={"terciary"} icon={TrashIcon} />
-					<ButtonIcon loading icon={TrashIcon} />
+					<ButtonIcon icon={TrashIcon} variant={"secondary"} />
+					<ButtonIcon icon={TrashIcon} variant={"terciary"} />
+					<ButtonIcon icon={TrashIcon} loading />
+					<ButtonIcon icon={TrashIcon} handling />
 				</div>
 
 				<div>
